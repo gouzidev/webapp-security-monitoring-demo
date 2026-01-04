@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: ../src/app
+      dockerfile: Dockerfile
+    container_name: security-monitor
+    ports:
+      - "8080:5000"
+    volumes:
+      - logs:/var/log
+      - logs:/tmp
+    networks:
+      - app-network
+
+  attacker:
+    build:
+      context: ../src/attacker
+      dockerfile: Dockerfile
+    container_name: attacker-server
+    ports:
+      - "9090:9000"
+    networks:
+      - app-network
+
+volumes:
+  logs:
+
+networks:
+  app-network:
+    driver: bridge
